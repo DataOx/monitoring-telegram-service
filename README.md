@@ -49,7 +49,7 @@ Step 2. Project deploy
 
 NOTE: Execute commands in the project folder!
 - **up project**: `docker-compose -f deploy.yml up --build -d`
-- **down project:** `docker-compose -f deploy.yml up down`
+- **down project:** `docker-compose -f deploy.yml down`
 
 
 
