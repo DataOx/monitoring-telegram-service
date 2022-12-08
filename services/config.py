@@ -1,0 +1,13 @@
+from decouple import config
+
+TELEGRAM_BOT_API_TOKEN = config('API_TOKEN')
+
+REDIS_CONNECTIO_URL = config('REDIS_CONNECTIO_URL')
+
+DB_CONNECTION_URL = config('DB_CONNECTION_URL')
+
+BROKER_POOL_TIMEOUT = config('BROKER_POOL_TIMEOUT', cast=int)
+
+MESSAGE_BROKER_COUNT = config('MESSAGE_BROKER_COUNT', cast=int)
+
+TEXT_MIN_LEN = config('TEXT_MIN_LEN')

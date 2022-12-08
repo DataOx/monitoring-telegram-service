@@ -1,0 +1,78 @@
+version: "3.8"
+services:
+
+  postgres:
+    container_name: postgres
+    image: postgres:12
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data-postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: bjbd672bjhw
+    expose:
+      - 5432
+
+  redis:
+    container_name: redis
+    restart: always
+    image: redis:latest
+    command: redis-server --requirepass njdksncj67236
+    volumes:
+      - ./data-redis:/data
+    ports:
+      - "6379:6379"
+    expose:
+      - 6379
+
+  web-mts:
+    container_name: web-mts
+    build:
+      context: ./
+      dockerfile: web.Dockerfile
+    restart: always
+    volumes:
+      - ./web/static/:/web/static/
+    ports:
+      - "3344:3344"
+    env_file:
+      - .env
+
+  nginx-mnt:
+    container_name: nginx-mnt
+    build:
+      context: nginx
+      dockerfile: nginx.Dockerfile
+    volumes:
+      - ./web/static/:/static
+    ports:
+      - "6688:80"
+    depends_on:
+      - web-mts
+
+  bot-mts:
+    container_name: bot-mts
+    restart: always
+    build:
+      context: ./
+      dockerfile: bot.Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - redis-mts
+      - web-mts
+
+  recorder-mts:
+    container_name: recorder-mts
+    restart: always
+    build:
+      context: ./
+      dockerfile: recorder.Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - redis-mts
+      - web-mts
